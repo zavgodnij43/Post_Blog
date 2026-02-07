@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Додати пост{% endblock %}
+
+{% block content %}
+<h2>Новий пост</h2>
+
+<form method="post">
+    <label>Текст посту:</label><br>
+    <textarea name="text" required rows="5"></textarea><br><br>
+
+    <label>Посилання на зображення:</label><br>
+    <input type="text" name="image"><br><br>
+
+    <label>Розділ:</label><br>
+    <select name="section" required>
+        {% for section in sections %}
+            <option value="{{ section.id }}">{{ section.name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Опублікувати</button>
+</form>
+{% endblock %}
