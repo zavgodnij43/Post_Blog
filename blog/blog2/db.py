@@ -33,6 +33,7 @@ def init_db():
 def seed_data():
     """Заповнює базу даних тестовими даними"""
     with get_db() as db:
+        # Додаємо розділи
         db.executemany("""
             INSERT OR IGNORE INTO sections (name, slug) 
             VALUES (?, ?)
@@ -81,7 +82,6 @@ def create_new_post(text, image, section_id):
         VALUES (?, ?, ?)
         """, (text, image, section_id))
         db.commit()
-
 
 
 if __name__ == "__main__":
