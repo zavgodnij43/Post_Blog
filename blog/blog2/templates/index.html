@@ -1,11 +1,55 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Блог</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;">
+            <h1>Мій Блог</h1>
+        </a>
+        <nav>
+            {% for section in sections %}
+            <a href="{{ url_for('section_page', section_slug=section.slug) }}">{{ section.name }}</a>
+            {% endfor %}
+            <a href="{{ url_for('add_post') }}" class="btn">+ Додати пост</a>
+        </nav>
+    </header>
 
-{% block title %}Головна{% endblock %}
-
-{% block content %}
-<h2>ВІТАЄМО У МОЄМУ БЛОЗІ!</h2>
-
-{% endblock %}
-
-
-
+    <main>
+        <h2>Всі пости</h2>
+        
+        {% if posts %}
+            {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar"></div>
+                    <div>
+                        <div class="post-username">{{ post.section_name }}</div>
+                    </div>
+                </div>
+                
+                {% if post.image %}
+                <img src="{{ post.image }}" alt="Post image">
+                {% endif %}
+                
+                <div class="post-content">
+                    <p class="post-caption">{{ post.text }}</p>
+                </div>
+                
+                <div class="post-actions">
+                    <button class="post-action-btn">❤️</button>
+                    <button class="post-action-btn">💬</button>
+                    <button class="post-action-btn">📤</button>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #8d6e63;">Поки що немає постів. <a href="{{ url_for('add_post') }}">Додати перший пост?</a></p>
+        {% endif %}
+    </main>
+</body>
+</html>
