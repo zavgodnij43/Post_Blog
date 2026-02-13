@@ -1,22 +1,51 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ section.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;">
+            <h1>Мій Блог</h1>
+        </a>
+        <nav>
+            {% for s in sections %}
+            <a href="{{ url_for('section_page', section_slug=s.slug) }}">{{ s.name }}</a>
+            {% endfor %}
+            <a href="{{ url_for('add_post') }}" class="btn">+ Додати пост</a>
+        </nav>
+    </header>
 
-{% block title %}{{ section.name }}{% endblock %}
-
-{% block content %}
-<h2>{{ section.name }}</h2>
-
-{% for post in posts %}
-    <div class="post">
-        <p>{{ post.text }}</p>
-
-        {% if post.image %}
-            <img src="{{ post.image }}" alt="">
+    <main>
+        <h2>{{ section.name }}</h2>
+        
+        {% if posts %}
+            {% for post in posts %}
+            <div class="post">
+                <div class="post-header">
+                    <div class="post-avatar"></div>
+                    <div>
+                        <div class="post-username">{{ section.name }}</div>
+                    </div>
+                </div>
+                
+                {% if post.image %}
+                <img src="{{ post.image }}" alt="Зображення поста">
+                {% endif %}
+                
+                <div class="post-content">
+                    <p class="post-caption">{{ post.text }}</p>
+                </div>
+                
+                <div class="post-time">Опубліковано: {{ post.created_at }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align: center; color: #8d6e63;">Поки що немає постів у цьому розділі.</p>
         {% endif %}
-
-        <br>
-        <small>Опубліковано: {{ post.created_at }}</small>
-    </div>
-{% else %}
-    <p>У цьому розділі ще немає постів</p>
-{% endfor %}
-{% endblock %}
+    </main>
+</body>
+</html>
