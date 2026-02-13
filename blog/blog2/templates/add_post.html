@@ -1,24 +1,50 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати пост</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}" style="text-decoration: none;">
+            <h1>Мій Блог</h1>
+        </a>
+        <nav>
+            {% for section in sections %}
+            <a href="{{ url_for('section_page', section_slug=section.slug) }}">{{ section.name }}</a>
+            {% endfor %}
+            <a href="{{ url_for('add_post') }}" class="btn">+ Додати пост</a>
+        </nav>
+    </header>
 
-{% block title %}Додати пост{% endblock %}
+    <main>
+        <h2>Створити новий пост</h2>
+        
+        <form method="POST" class="add-post-form">
+            <div class="form-group">
+                <label for="section">Розділ:</label>
+                <select name="section" id="section" required>
+                    <option value="">Оберіть розділ</option>
+                    {% for section in sections %}
+                    <option value="{{ section.id }}">{{ section.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-{% block content %}
-<h2>Новий пост</h2>
+            <div class="form-group">
+                <label for="text">Текст поста:</label>
+                <textarea name="text" id="text" required placeholder="Напишіть щось цікаве..."></textarea>
+            </div>
 
-<form method="post">
-    <label>Текст посту:</label><br>
-    <textarea name="text" required rows="5"></textarea><br><br>
+            <div class="form-group">
+                <label for="image">Посилання на зображення (необов'язково):</label>
+                <input type="url" name="image" id="image" placeholder="https://example.com/image.jpg">
+            </div>
 
-    <label>Посилання на зображення:</label><br>
-    <input type="text" name="image"><br><br>
-
-    <label>Розділ:</label><br>
-    <select name="section" required>
-        {% for section in sections %}
-            <option value="{{ section.id }}">{{ section.name }}</option>
-        {% endfor %}
-    </select><br><br>
-
-    <button type="submit">Опублікувати</button>
-</form>
-{% endblock %}
+            <button type="submit" class="submit-btn">Опублікувати пост</button>
+        </form>
+    </main>
+</body>
+</html>
