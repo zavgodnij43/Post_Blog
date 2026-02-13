@@ -15,7 +15,22 @@ if len(get_blog_sections()) == 0:
 @app.route("/")
 def index():
     sections = get_blog_sections()
-    return render_template("index.html", sections=sections)
+
+    # Отримуємо всі пости з усіх розділів
+    all_posts = []
+    for section in sections:
+        posts = get_section_posts(section["id"])
+        # Конвертуємо кожен пост у словник і додаємо інформацію про розділ
+        for post in posts:
+            post_dict = dict(post)  # Конвертуємо Row в dict
+            post_dict["section_name"] = section["name"]
+            post_dict["section_slug"] = section["slug"]
+            all_posts.append(post_dict)
+
+    # Сортуємо пости за датою (найновіші першими)
+    all_posts.sort(key=lambda x: x.get("id", 0), reverse=True)
+
+    return render_template("index.html", sections=sections, posts=all_posts)
 
 
 @app.route("/<section_slug>")
