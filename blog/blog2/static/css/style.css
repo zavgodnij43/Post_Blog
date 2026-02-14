@@ -7,6 +7,10 @@ body {
     min-height: 100vh;
 }
 
+html{
+background-image: radial-gradient(circle at center center, rgb(213, 109, 39),rgb(29, 16, 5));
+}
+
 header {
     display: flex;
     justify-content: space-between;
